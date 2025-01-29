@@ -5,18 +5,20 @@ set nocompatible
 syntax enable
 
 " configure Vundle
-filetype on " without this vim emits a zero exit status, later, because of :ft off
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if !has('nvim')
+  filetype on " without this vim emits a zero exit status, later, because of :ft off
+  filetype off
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
 
-" install Vundle bundles
-if filereadable(expand("~/.vimrc.bundles"))
-  source ~/.vimrc.bundles
-  source ~/.vimrc.bundles.local
+  " install Vundle bundles
+  if filereadable(expand("~/.vimrc.bundles"))
+    source ~/.vimrc.bundles
+    source ~/.vimrc.bundles.local
+  endif
+
+  call vundle#end()
 endif
-
-call vundle#end()
 
 " ensure ftdetect et al work by including this after the Vundle stuff
 filetype plugin indent on
@@ -48,7 +50,7 @@ set wildmode=longest,list,full
 
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
-if exists('$TMUX')  " Support resizing in tmux
+if !has('nvim') && exists('$TMUX')  " Support resizing in tmux
   set ttymouse=xterm2
 endif
 
